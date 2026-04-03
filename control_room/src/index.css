@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Force monospace everywhere — no FOUT, consistent metrics */
+* {
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", "Fira Code", monospace;
+}
+
+/* Remove browser default tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}

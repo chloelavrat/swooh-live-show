@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(python scripts/convert_configs.py)",
+      "Bash(python3 -c \"import yaml; print\\('yaml available'\\)\")",
+      "Bash(brew install:*)",
+      "Bash(python3 -m venv /tmp/lpx_venv)",
+      "Bash(/tmp/lpx_venv/bin/pip install:*)",
+      "Bash(/tmp/lpx_venv/bin/python scripts/convert_configs.py)",
+      "Bash(/tmp/lpx_venv/bin/python -m pytest tests/ -v)",
+      "Bash(npx vite:*)",
+      "Bash(/tmp/lpx_venv/bin/python -m pytest tests/ -v --tb=short)",
+      "Bash(/tmp/lpx_venv/bin/python scripts/simulator.py)",
+      "Bash(curl -s http://localhost:9002/health)",
+      "Bash(curl -s -X POST http://localhost:9002/midi -H \"Content-Type: application/json\" -d '{\"status\": 144, \"data1\": 11, \"data2\": 100}')",
+      "Read(//Users/chloelavrat/.lpx95/**)",
+      "Bash(kill %1)",
+      "Bash(npx tsc:*)",
+      "Bash(/tmp/lpx_venv/bin/pytest:*)"
+    ]
+  }
+}

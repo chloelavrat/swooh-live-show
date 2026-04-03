@@ -1,0 +1,106 @@
+{
+  "device": {
+    "name": "Launchpad X",
+    "manufacturer": "Novation",
+    "sysex_header": [
+      0,
+      32,
+      41,
+      2,
+      12
+    ],
+    "grid": {
+      "width": 9,
+      "height": 9,
+      "pad_offset": 11,
+      "row_stride": 10
+    },
+    "zones": {
+      "drum_pad": {
+        "role": "drum_selector",
+        "rows": [
+          0,
+          3
+        ],
+        "cols": [
+          0,
+          3
+        ]
+      },
+      "step_sequencer": {
+        "role": "step_grid",
+        "rows": [
+          4,
+          7
+        ],
+        "cols": [
+          0,
+          7
+        ]
+      },
+      "clip_length": {
+        "role": "clip_navigation",
+        "rows": [
+          8,
+          8
+        ],
+        "cols": [
+          0,
+          7
+        ]
+      },
+      "controls": {
+        "role": "control_strip",
+        "rows": [
+          0,
+          7
+        ],
+        "cols": [
+          8,
+          8
+        ]
+      }
+    },
+    "cc_map": {
+      "octave_up": {
+        "channel": 1,
+        "number": 89
+      },
+      "octave_down": {
+        "channel": 1,
+        "number": 79
+      },
+      "nav_up": {
+        "channel": 1,
+        "number": 91
+      },
+      "nav_down": {
+        "channel": 1,
+        "number": 92
+      },
+      "nav_left": {
+        "channel": 1,
+        "number": 93
+      },
+      "nav_right": {
+        "channel": 1,
+        "number": 94
+      }
+    },
+    "palette": "novation_128",
+    "special_pads": {
+      "mute_button": {
+        "note": 89
+      },
+      "trigger_roll": {
+        "note": 79
+      },
+      "lock_toggle": {
+        "note": 19
+      },
+      "color_change": {
+        "note": 9
+      }
+    }
+  }
+}

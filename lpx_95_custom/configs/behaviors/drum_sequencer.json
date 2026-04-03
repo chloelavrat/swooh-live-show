@@ -1,0 +1,67 @@
+{
+  "behavior": "DrumSequencer",
+  "defaults": {
+    "step_length": "1/16",
+    "octave_root": "C1",
+    "lock_state": "unlocked"
+  },
+  "bindings": {
+    "drum_pad": {
+      "zone": "drum_pad",
+      "on_press": "select_chain",
+      "on_playhead": "flash_red",
+      "feedback": {
+        "armed": "chain_color",
+        "muted": "grey",
+        "empty": false
+      }
+    },
+    "step_grid": {
+      "zone": "step_sequencer",
+      "on_press_empty": "insert_note",
+      "on_press_filled": "delete_note",
+      "playhead": {
+        "color": "orange",
+        "style": "solid"
+      },
+      "feedback": {
+        "velocity_to_brightness": true,
+        "muted_style": "grey",
+        "muted_playing_style": "pulse_red"
+      }
+    },
+    "clip_nav": {
+      "zone": "clip_length",
+      "on_press": "scroll_to_beat",
+      "feedback": {
+        "has_content": "dim_white",
+        "in_view": "bright_white"
+      }
+    },
+    "trigger_roll": {
+      "pad": "trigger_roll",
+      "mode": "momentary",
+      "quantize_zone": "clip_length",
+      "default_quantize": "1/16"
+    },
+    "mute": {
+      "pad": "mute_button",
+      "default_mode": "momentary",
+      "latch_color": "orange_pulse"
+    },
+    "lock": {
+      "pad": "lock_toggle",
+      "states": {
+        "unlocked": {
+          "color": "violet_dim"
+        },
+        "lock_track": {
+          "color": "violet_bright"
+        },
+        "full_lock": {
+          "color": "violet_pulse"
+        }
+      }
+    }
+  }
+}
