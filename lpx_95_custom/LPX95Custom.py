@@ -61,6 +61,9 @@ class LPX95Custom(ControlSurface):
         self._router.push(drum)
         self._router.push(seq)   # top of stack; highest priority
 
+        # Confirm in Ableton's status bar that the script + device are live.
+        self.show_message("LPX95 Custom connected — Launchpad X ready")
+
     # ------------------------------------------------------------------
     # Ableton callbacks
     # ------------------------------------------------------------------
