@@ -95,6 +95,40 @@ make install
 
 `make run-simulator` starts three processes: bridge (port 9001), Python simulator (port 9002), and the React dev server.
 
+### Running on real hardware (Launchpad X + Ableton)
+
+The simulator fakes both the Launchpad and Ableton — it writes `state.json` itself.
+With a real Launchpad X, Ableton's Remote Script writes that file instead, so the
+flow is different:
+
+1. **Stop the simulator** if it's running (`make run-simulator`) — it competes with
+   the real script over `~/.lpx95/state.json`.
+
+2. **Install the Remote Script into Ableton:**
+   ```bash
+   make install
+   ```
+   This copies `lpx_95_custom/` into Ableton's `MIDI Remote Scripts` directory.
+   It auto-detects Ableton Live 11/12. For a non-standard location:
+   ```bash
+   make convert
+   python lpx_95_custom/scripts/install.py --ableton-path "/path/to/Ableton Live 12 Suite.app"
+   ```
+
+3. **Configure Ableton** — Preferences → Link/Tempo/MIDI → MIDI:
+   - **Control Surface** → `lpx_95_custom`
+   - **Input** and **Output** → your **Launchpad X** ports
+   - Restart Ableton if the script doesn't appear in the list.
+
+4. **Start bridge + UI** (no simulator):
+   ```bash
+   make run
+   ```
+   State now flows: Ableton → Remote Script → `state.json` → bridge → UI.
+
+> Verify the Launchpad is connected in **Audio MIDI Setup → MIDI Studio** (macOS)
+> before launching — it should appear as "Launchpad X".
+
 ---
 
 ## Development
