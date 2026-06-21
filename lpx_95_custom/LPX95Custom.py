@@ -68,8 +68,24 @@ class LPX95Custom(ControlSurface):
     # Ableton callbacks
     # ------------------------------------------------------------------
 
-    def receive_midi_chunk(self, midi_bytes):
-        for status, d1, d2 in midi_bytes:
+    def build_midi_map(self, midi_map_handle):
+        # Ableton only delivers incoming MIDI to receive_midi(_chunk) for
+        # messages we explicitly forward here. Without this, the Launchpad's
+        # pad/CC presses never reach the router (output works, input is dead).
+        script_handle = self._c_instance.handle()
+        for channel in range(16):
+            for index in range(128):
+                Live.MidiMap.forward_midi_note(script_handle, midi_map_handle, channel, index)
+                Live.MidiMap.forward_midi_cc(script_handle, midi_map_handle, channel, index)
+
+    def receive_midi(self, midi_bytes):
+        # Single forwarded message: (status, data1, data2).
+        status, d1, d2 = midi_bytes
+        self._router.dispatch(parse(status, d1, d2))
+
+    def receive_midi_chunk(self, midi_chunk):
+        # Batched forwarded messages: an iterable of (status, data1, data2).
+        for status, d1, d2 in midi_chunk:
             self._router.dispatch(parse(status, d1, d2))
 
     def disconnect(self):
