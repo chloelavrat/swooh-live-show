@@ -2,13 +2,20 @@
 """
 Install lpx_95_custom into Ableton's Remote Scripts directory.
 
+By default the script installs into Ableton's User Library, which is
+user-writable (no sudo) and survives Ableton updates:
+
+    ~/Music/Ableton/User Library/Remote Scripts/lpx_95_custom
+
 Usage:
     python scripts/install.py
-    python scripts/install.py --ableton-path "/Applications/Ableton Live 12.app"
+    python scripts/install.py --user-library "/custom/User Library"
+    python scripts/install.py --into-app                       # legacy: inside the .app bundle
+    python scripts/install.py --into-app --ableton-path "/Applications/Ableton Live 12.app"
 
 The script:
   1. Checks that JSON configs exist (aborts if convert_configs.py hasn't been run).
-  2. Copies lpx_95_custom/ into the Ableton Remote Scripts directory.
+  2. Copies lpx_95_custom/ into the target Remote Scripts directory.
   3. Prints a reminder to restart Ableton and enable the script.
 """
 
@@ -30,6 +37,8 @@ DEFAULT_ABLETON_PATHS = [
 
 REMOTE_SCRIPTS_SUBPATH = "Contents/App-Resources/MIDI Remote Scripts"
 
+DEFAULT_USER_LIBRARY = os.path.expanduser("~/Music/Ableton/User Library")
+
 
 def find_ableton(given: str = None) -> str:
     if given:
@@ -40,9 +49,33 @@ def find_ableton(given: str = None) -> str:
     return None
 
 
+def resolve_dest_root(args) -> str:
+    """Return the 'Remote Scripts' directory to install into (created if needed)."""
+    if args.into_app:
+        ableton_app = find_ableton(args.ableton_path)
+        if not ableton_app:
+            print("ERROR: Could not find Ableton Live. Pass --ableton-path explicitly.")
+            sys.exit(1)
+        dest_root = os.path.join(ableton_app, REMOTE_SCRIPTS_SUBPATH)
+        if not os.path.isdir(dest_root):
+            print(f"ERROR: Remote Scripts directory not found at: {dest_root}")
+            sys.exit(1)
+        return dest_root
+
+    # Default: User Library (user-writable, survives app updates).
+    dest_root = os.path.join(args.user_library, "Remote Scripts")
+    os.makedirs(dest_root, exist_ok=True)
+    return dest_root
+
+
 def main():
     parser = argparse.ArgumentParser(description="Install LPX95Custom Remote Script")
-    parser.add_argument("--ableton-path", default=None, help="Path to Ableton Live .app")
+    parser.add_argument("--ableton-path", default=None,
+                        help="Path to Ableton Live .app (only with --into-app)")
+    parser.add_argument("--into-app", action="store_true",
+                        help="Install inside the Ableton .app bundle (legacy; may need sudo)")
+    parser.add_argument("--user-library", default=DEFAULT_USER_LIBRARY,
+                        help="Ableton User Library path (default: ~/Music/Ableton/User Library)")
     args = parser.parse_args()
 
     script_dir   = os.path.dirname(os.path.abspath(__file__))
@@ -58,17 +91,8 @@ def main():
             print("Run: python scripts/convert_configs.py")
             sys.exit(1)
 
-    # 2. Find Ableton
-    ableton_app = find_ableton(args.ableton_path)
-    if not ableton_app:
-        print("ERROR: Could not find Ableton Live. Pass --ableton-path explicitly.")
-        sys.exit(1)
-
-    dest_root = os.path.join(ableton_app, REMOTE_SCRIPTS_SUBPATH)
-    if not os.path.isdir(dest_root):
-        print(f"ERROR: Remote Scripts directory not found at: {dest_root}")
-        sys.exit(1)
-
+    # 2. Resolve destination
+    dest_root = resolve_dest_root(args)
     dest_dir = os.path.join(dest_root, "lpx_95_custom")
 
     # 3. Copy

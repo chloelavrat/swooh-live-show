@@ -108,11 +108,17 @@ flow is different:
    ```bash
    make install
    ```
-   This copies `lpx_95_custom/` into Ableton's `MIDI Remote Scripts` directory.
-   It auto-detects Ableton Live 11/12. For a non-standard location:
+   This copies `lpx_95_custom/` into Ableton's **User Library** —
+   `~/Music/Ableton/User Library/Remote Scripts/lpx_95_custom` — which is
+   user-writable (no `sudo`) and survives Ableton updates.
+
+   Options:
    ```bash
    make convert
-   python lpx_95_custom/scripts/install.py --ableton-path "/path/to/Ableton Live 12 Suite.app"
+   # custom User Library location:
+   python lpx_95_custom/scripts/install.py --user-library "/path/to/User Library"
+   # legacy: install inside the .app bundle (may require sudo on macOS):
+   python lpx_95_custom/scripts/install.py --into-app
    ```
 
 3. **Configure Ableton** — Preferences → Link/Tempo/MIDI → MIDI:
