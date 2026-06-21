@@ -208,3 +208,6 @@ __marimo__/
 
 # Claude Code local config
 .claude/
+
+# Node deps (install per-machine via npm install)
+control_room/node_modules/
